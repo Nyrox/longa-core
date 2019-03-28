@@ -1,0 +1,29 @@
+
+
+services:
+  wordpress:
+    build: .
+
+    shippy:
+      expose: true
+      vhost: $SHIPPY_HOST
+      ports:
+        - 80
+        - 433
+
+    shippy-dev-volumes:
+      - /srv/app/wp-content/themes:/themes
+      - /srv/app/wp-content/plugins:plugins
+
+    shippy-data-volumes:
+      uploads:
+        path: /srv/app/wp-content/uploads
+        backup: false
+
+  psql:
+    image: postgres
+    restart: always
+
+    shippy-data-volumes:
+      data:
+        path: /var/lib/postgresql/data
