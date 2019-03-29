@@ -5,5 +5,5 @@ services:
   shippyd:
     build: .
     volumes:
-      - ./dist:/opt/shippyd/dist
+      - ./src:/opt/shippyd/src
 
