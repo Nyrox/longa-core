@@ -1,0 +1,17 @@
+
+{
+	"dockerfile": "Dockerfile",
+	"targets": {
+		"staging": {
+
+		}
+	},
+	"ports": [80],
+	"registry": {
+		"host": "gitlab.nyrox.tech:5005"
+	},
+	"project": {
+		"name": "shippy-crash-test",
+		"group": "nyrox"
+	}
+}

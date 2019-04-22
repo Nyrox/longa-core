@@ -5,6 +5,7 @@ import * as Config from "./config"
 import { chmod } from "fs"
 
 import * as CliTools from "./cli"
+import * as Service from "./service";
 
 // Dotenv
 require("dotenv").config()
@@ -57,31 +58,13 @@ Program.command("build")
 
 		if (!publish) return;
 
-		let registryUser = process.env.REGISTRY_USER || user
-        let registryPass = process.env.REGISTRY_PASS || pass
-
-		if (
-            !CliTools.insist(
-                registryUser,
-                "Please supply a registry username through cli parameters or environment variables"
-            ) ||
-            !CliTools.insist(
-                registryPass,
-                "Please supply a registry password through cli parameters or environment variables"
-            )
-        ) {
-            return
-        }
-
-        // Login
-		let loginCommand = `docker login -u ${registryUser} -p ${registryPass} ${config.registry.host}`
-		child_process.execSync(loginCommand, {stdio: "inherit"});
-		
-		let publishCommand = `docker push ${imageName}`
-		console.info(publishCommand);
-		
-		child_process.execSync(publishCommand, {stdio: "inherit"});
-
+        Service.publish (null, "latest", {
+            registry: {
+                user: process.env.REGISTRY_USER || user,
+                pass: process.env.REGISTRY_PASS || pass,
+                host: config.registry.host
+            }
+        })
     })
 
 Program.command("publish <tag>")
@@ -92,40 +75,18 @@ Program.command("publish <tag>")
         "Change the working directory context in which to run shippy"
 	)
     .action((tag, cmd) => {
-        let registryUser = process.env.REGISTRY_USER || cmd.user
-        let registryPass = process.env.REGISTRY_PASS || cmd.pass
-
-	
-		if(cmd.context) process.chdir(cmd.context);
-
+        if (cmd.context) process.chdir (cmd.context)
+        
         let config = Config.load()
+        if (!CliTools.insist(config !== null, "No config file found at this location")) { return }
 
-        if (config === null) {
-            console.error("No shippy config file found in this location.")
-            return false
-        }
-
-        if (
-            !CliTools.insist(
-                registryUser,
-                "Please supply a registry username through cli parameters or environment variables"
-            ) ||
-            !CliTools.insist(
-                registryPass,
-                "Please supply a registry password through cli parameters or environment variables"
-            )
-        ) {
-            return
-        }
-
-        // Login
-		let loginCommand = `docker login -u ${registryUser} -p ${registryPass} ${config.registry.host}`
-		child_process.exec(loginCommand, (error, out, err) => {
-			if (error) console.error(err)
-			else {
-				console.log(out);
-			}
-		})
+        return Service.publish (null, "latest", {
+            registry: {
+                user: process.env.REGISTRY_USER || cmd.user,
+                pass: process.env.REGISTRY_PASS || cmd.pass,
+                host: config.registry.host
+            }
+        })
     })
 
 Program.version("1.0.0").parse(process.argv)

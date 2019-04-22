@@ -13,7 +13,7 @@ interface Config {
 
 
 export function load (): Config {
-	const path = process.cwd() + "/.shippy/shippy.config.json";
+	const path = process.cwd() + "/shippy.config.json";
 	
 	try {
 		const configFile = fs.readFileSync(path, "utf-8");
