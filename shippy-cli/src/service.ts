@@ -2,6 +2,7 @@ import * as CliTools from "./cli";
 import * as Config from "./config";
 
 import * as child_process from "child_process";
+import * as sequest from "sequest";
 
 
 export interface Registry {
@@ -22,7 +23,6 @@ function get_qualified_image_name(host, group, project, imageName = null, tag = 
 }
 
 function login({ host, user, pass }: Registry) {
-
     if (
         !CliTools.insist(
             user,
@@ -58,4 +58,31 @@ export function publish(imageName = null, tag, context: Context) {
     child_process.execSync(publish_command, { stdio: "inherit" })
 
     return true;
+}
+
+export enum AuthMethod {
+    Pass,
+    PrivKey
+}
+
+interface ConnectionSettings {
+    host: string
+    user: string
+    
+    authMethod: AuthMethod
+    authKey: string
+}
+
+export function deploy (conn: ConnectionSettings, image) {
+    const config = Config.load()
+
+    let client = sequest.connect(`${conn.user}@${conn.host}`, {
+        password: conn.authMethod == AuthMethod.Pass ? conn.authKey : null,
+        privateKey: conn.authMethod == AuthMethod.PrivKey ? conn.authKey : null
+    });
+
+    client("ls -al", function (e, stdout) {
+        console.log(stdout.split('\n'));
+        client.end();
+    })
 }

@@ -13,5 +13,13 @@ export function insist (condition, error) {
 	return true;
 }
 
+export function insistOr (condition, error, cb) {
+	if (!insist (condition, error)) {
+		cb ()
+	}
+
+	return true
+}
+
 
 
