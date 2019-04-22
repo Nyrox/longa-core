@@ -1325,11 +1325,6 @@ resolve-url@^0.2.1:
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
-result-js@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/result-js/-/result-js-4.0.2.tgz#2703179c027cbc22d5b936e7ba13b8a89b0301c8"
-  integrity sha512-qfcsPDgEGD2MRVu4N7vAGLnTug6x6bn0S55zn66YFesVIlFMRKz63FMI7EuZQ4ZG+n0xysVcwOhs67q7l9aKfw==
-
 ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"

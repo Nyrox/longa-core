@@ -1,6 +1,6 @@
 FROM node:lts
 
-COPY . /opt/shippyd
+COPY ./ /opt/shippyd
 WORKDIR /opt/shippyd
 
 RUN yarn

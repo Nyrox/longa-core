@@ -6,8 +6,6 @@ import { chmod } from "fs"
 
 import * as CliTools from "./cli"
 
-import * as Result from "result-js";
-
 // Dotenv
 require("dotenv").config()
 
