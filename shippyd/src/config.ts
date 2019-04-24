@@ -2,19 +2,22 @@ import * as fs from "fs";
 import * as util from "util";
 import * as path from "path";
 
+export const CONFIG_DIR = "/etc/shippyd/";
+export const DEFAULT_PATH = CONFIG_DIR + "shippyd.json";
 
-export const DEFAULT_PATH = "/etc/shippyd/config.json";
-
-interface Config {
-
+export interface Config {
+	applicationDir: string
+	dataDir: string
+	authDir: string
 }
+
 
 export async function load () : Promise<Config> {
 	const read = util.promisify(fs.readFile);
 
 	let configFile = await read(DEFAULT_PATH, "utf-8").catch(_ => {
-		console.warn("Unable to find configuration file. Use the 'init' command to create one interactively.");
-		return process.exit(-1)		
+		console.warn("No config file for shippy found. Aborting...")
+		return process.exit(-1)
 	})
 
 	return JSON.parse(configFile);

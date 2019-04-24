@@ -13,8 +13,7 @@ import * as Service from "./service";
 
 Program.command("ls, list")
 .action(cmd => {
-	exec("ls");
-	console.log("LS DONE");
+	Service.list_instances()
 })
 
 Program.command("config")
@@ -22,9 +21,15 @@ Program.command("config")
 		console.log(await Config.load())
 	})
 
-Program.command("init")
-	.action(cmd => {
-		Service.setup()
+Program.command("install")
+	.action(async cmd => {
+		Service.install()
 	})
-	
+
+Program.command ("deploy <image> <name>")
+	.description("Deploys the image given by <image> under the name <name>.")
+	.action(async cmd => {
+
+	})
+
 Program.version("1.0.0").parse(process.argv);
