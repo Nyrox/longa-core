@@ -9,6 +9,7 @@ export interface Config {
 	applicationDir: string
 	dataDir: string
 	authDir: string
+	logDir: string
 }
 
 
@@ -34,5 +35,5 @@ export async function store (config: Config) : Promise<void> {
 		fs.mkdirSync (path.dirname(DEFAULT_PATH), {recursive: true});
 	}
 
-	write (DEFAULT_PATH, JSON.stringify(config))
+	write (DEFAULT_PATH, JSON.stringify(config, null, 4))
 }

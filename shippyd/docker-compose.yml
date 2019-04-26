@@ -6,4 +6,6 @@ services:
     build: .
     volumes:
       - ./src:/opt/shippyd/src
+      - ./resolv.conf:/etc/resolv.conf
 
+    network_mode: host

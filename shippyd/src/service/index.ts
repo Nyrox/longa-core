@@ -7,6 +7,7 @@ import * as inquirer from "inquirer";
 import * as Config from "../config";
 import * as fs from "fs";
 import * as path from "path";
+import * as Docker from "service/docker";
 
 export async function install() {
 	if (Config.exists()) {
@@ -19,7 +20,8 @@ export async function install() {
 	const DEFAULT_CONFIG: Config.Config = {
 		applicationDir: "/var/shippyd/applications/",
 		dataDir: "/var/shippyd/appdata/",
-		authDir: "/etc/shippyd/credentials/"
+		authDir: "/etc/shippyd/credentials/",
+		logDir: "/var/log/shippyd/"
 	}
 
 	// Create the needed directories
@@ -29,7 +31,8 @@ export async function install() {
 		fs.mkdirSync (Config.CONFIG_DIR, {recursive: true});
 		fs.mkdirSync (DEFAULT_CONFIG.applicationDir, {recursive: true})
 		fs.mkdirSync (DEFAULT_CONFIG.dataDir, {recursive: true});
-		fs.mkdirSync (DEFAULT_CONFIG.authDir, {recursive: true});
+		fs.mkdirSync (DEFAULT_CONFIG.authDir, {mode: 0o700, recursive: true});
+		fs.mkdirSync (DEFAULT_CONFIG.logDir, {recursive: true})
 	} catch (e) {
 		console.error (e.message)
 		process.exit(-1);

@@ -23,7 +23,9 @@ Program.command("config")
 
 Program.command("install")
 	.action(async cmd => {
-		Service.install()
+		console.log(Service);
+		
+		await Service.install()
 	})
 
 Program.command ("deploy <image> <name>")
