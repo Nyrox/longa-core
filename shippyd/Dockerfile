@@ -8,6 +8,7 @@ WORKDIR /opt/shippyd
 RUN mkdir bin
 
 # I really hate not having an editor
+RUN apt update
 RUN apt install nano
 
 # Deps

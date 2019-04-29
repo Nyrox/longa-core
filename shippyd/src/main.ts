@@ -29,9 +29,15 @@ Program.command("install")
 	})
 
 Program.command ("deploy <image> <name>")
+	.option("--context <workdir>", "")
 	.description("Deploys the image given by <image> under the name <name>.")
-	.action(async cmd => {
+	.action(async (image, name, cmd) => {
+		if (cmd.context) process.chdir (cmd.workdir)
 
+
+		console.info (`Deploying image: ${image} to slot ${name}`)
+
+		Service.deploy (image, name)
 	})
 
 Program.version("1.0.0").parse(process.argv);

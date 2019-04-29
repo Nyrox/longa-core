@@ -5,6 +5,10 @@ import * as inquirer from "inquirer";
 
 
 import * as Config from "../config";
+import * as DeployConfig from "../deploy_config"
+
+import { Deployment } from "./deployment"
+
 import * as fs from "fs";
 import * as path from "path";
 import * as Docker from "service/docker";
@@ -45,6 +49,46 @@ export async function install() {
 	console.info ("Installation finished!");
 }
 
+export async function deploy (image, name) {
+	let config = await Config.load()
+	let deploy = await DeployConfig.load().unwrap()
+
+	let appdir = `${config.applicationDir}${name}/`
+
+	console.info (`Deploying to config dir: ${appdir}`)
+	
+	// Check if the deployment already exists
+	if (fs.existsSync (appdir)) {
+		// Shutdown, Rebuild and Deploy
+		process.chdir (appdir)
+	}
+	else {
+		// Deploy newly
+		fs.mkdirSync (appdir)
+
+		process.chdir (appdir)
+		DeployConfig.store (deploy)
+
+		let deployment = new Deployment ()
+		deployment.image = get_qualified_image_name(
+			deploy.registry.host,
+			deploy.project.group,
+			deploy.project.name,
+			image,
+			"latest"
+		)
+
+		deployment.generate()
+	}
+}
+
+
+function get_qualified_image_name(host, group, project, imageName = null, tag = "latest") {
+    let base = `${host}/${group}/${project}`;
+
+    return imageName ?
+        base + `/${imageName}:${tag}` : base + `:${tag}`
+}
 
 export async function list_instances() {
 	let config = await Config.load()
