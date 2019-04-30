@@ -10,7 +10,6 @@ import * as Config from "./config";
 
 import * as Service from "./service";
 
-
 Program.command("ls, list")
 .action(cmd => {
 	Service.list_instances()
@@ -40,4 +39,4 @@ Program.command ("deploy <image> <name>")
 		Service.deploy (image, name)
 	})
 
-Program.version("1.0.0").parse(process.argv);
+Program.version("1.0.3").parse(process.argv);
