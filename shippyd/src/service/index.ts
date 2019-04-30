@@ -79,6 +79,8 @@ export async function deploy (image, name) {
 		)
 
 		deployment.generate()
+
+		Docker.compose_up ()
 	}
 }
 
