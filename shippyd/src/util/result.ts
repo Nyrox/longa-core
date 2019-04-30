@@ -23,6 +23,11 @@ export class Result<T> {
     unwrap (): T {
         if (this.isErr) {
             console.error(this.inner)
+
+            if (process.env.RESULT_BACKTRACE) {
+                console.trace()
+            }
+
             process.exit(-1)
         }
         else {

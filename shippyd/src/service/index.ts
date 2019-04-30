@@ -11,7 +11,8 @@ import { Deployment } from "./deployment"
 
 import * as fs from "fs";
 import * as path from "path";
-import * as Docker from "service/docker";
+import * as Docker from "./docker";
+import { workdir } from "../util/index";
 
 export async function install() {
 	if (Config.exists()) {
@@ -49,13 +50,46 @@ export async function install() {
 	console.info ("Installation finished!");
 }
 
+import { URL } from "url"
+import * as filesystem from "../util/filesystem"
+import * as ini from "ini"
+import { Result } from "../util/result"
+
+async function login (host: string): Promise<Result<any>> {
+	const re = /((\w+):\/\/)?([\w\.]+)(:(\d+))?/
+	
+	const matches = re.exec (host)
+	console.log(matches);
+	
+	const protocol = matches[1]
+	const hostname = matches[3]
+	const port = matches[5]
+
+	let config = await Config.load()
+	let credentials_file = config.authDir + hostname
+
+	if (filesystem.existsSync (credentials_file).unwrap()) {
+		let cred = ini.parse(filesystem.readFileSync(credentials_file, "utf-8").unwrap())
+		
+		// Note that we use the full host part here, not just the hostname
+		// This is to ensure hosts with explicit protocol or port restrictions continue working
+		return Docker.login (cred.user, cred.pass, host)
+	}
+	else {
+		return Result.Err (`No credentials file for host ${hostname}`)
+	}
+}
+
 export async function deploy (image, name) {
 	let config = await Config.load()
 	let deploy = await DeployConfig.load().unwrap()
 
 	let appdir = `${config.applicationDir}${name}/`
 
-	console.info (`Deploying to config dir: ${appdir}`)
+	console.info (`Deploying to config dir: ${appdir}`);
+	
+	// Check if we can login to the registry
+	(await login (deploy.registry.host)).unwrap()
 	
 	// Check if the deployment already exists
 	if (fs.existsSync (appdir)) {
@@ -67,6 +101,7 @@ export async function deploy (image, name) {
 		fs.mkdirSync (appdir)
 
 		process.chdir (appdir)
+
 		DeployConfig.store (deploy)
 
 		let deployment = new Deployment ()
@@ -74,15 +109,45 @@ export async function deploy (image, name) {
 			deploy.registry.host,
 			deploy.project.group,
 			deploy.project.name,
-			image,
+			"",
 			"latest"
 		)
 
 		deployment.generate()
+		
 
 		Docker.compose_up ()
 	}
 }
+
+export async function stop (name) {
+	let config = await Config.load()
+	let appdir = `${config.applicationDir}${name}/`
+	
+	if (!fs.existsSync (appdir)) {
+		console.info (`Deployment ${name} could not be found`)
+		process.exit(-1)
+	}
+
+	process.chdir (appdir)
+	Docker.compose_stop()
+}
+
+export async function remove (name) {
+	let config = await Config.load()
+	let appdir = `${config.applicationDir}${name}/`
+
+
+	await stop (name)
+
+	workdir (appdir, () => Docker.compose_down())
+	
+	fs.unlinkSync (appdir + "shippy.config.json")
+	fs.unlinkSync (appdir + "docker-compose.yml")
+	fs.rmdirSync (appdir)
+	
+}
+
 
 
 function get_qualified_image_name(host, group, project, imageName = null, tag = "latest") {

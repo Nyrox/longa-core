@@ -36,7 +36,17 @@ Program.command ("deploy <image> <name>")
 
 		console.info (`Deploying image: ${image} to slot ${name}`)
 
-		Service.deploy (image, name)
+		await Service.deploy (image, name)
+	})
+
+Program.command ("stop <name>")
+	.action(async (name, cmd) => {
+		await Service.stop (name)
+	})
+
+Program.command ("remove <name>") 
+	.action(async (name, cmd) => {
+		await Service.remove (name)
 	})
 
 Program.version("1.0.3").parse(process.argv);

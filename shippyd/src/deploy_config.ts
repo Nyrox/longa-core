@@ -1,7 +1,7 @@
 import * as fs from "fs"
 import * as util from "util"
 
-import { Result } from "./result"
+import { Result } from "./util/result"
 
 interface Config {
 	dockerfile: string
