@@ -36,8 +36,17 @@ function login({ host, user, pass }: Registry) {
         return false
     }
 
-    let login_command = `docker login -u ${user} -p ${pass} ${host}`
+    const re = /((\w+):\/\/)?([\w\.]+)(:(\d+))?/
+	
+	const matches = re.exec (host)
+	
+	const protocol = matches[1]
+	const hostname = matches[3]
+	const port = matches[5]
 
+    let login_command = `docker login -u ${user} -p ${pass} ${hostname}`
+
+    console.info(login_command);
     child_process.execSync(login_command, { stdio: "inherit" });
 
     return true
