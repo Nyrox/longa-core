@@ -3,6 +3,7 @@ image: docker:stable
 variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:latest
 
 services:
   - docker:dind
@@ -10,10 +11,10 @@ services:
 build:
   stage: build
   script:
-    - docker build -t shippy .
+    - docker build -t $IMAGE_TAG .
     - docker run shippy shippyd --version
     - docker run shippy shippy --version
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push $CI_REGISTRY/nyrox/shippy:latest
+    - docker push $IMAGE_TAG
   only:
     - master
