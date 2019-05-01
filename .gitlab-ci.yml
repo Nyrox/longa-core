@@ -12,8 +12,8 @@ build:
   stage: build
   script:
     - docker build -t $IMAGE_TAG .
-    - docker run shippy shippyd --version
-    - docker run shippy shippy --version
+    - docker run $IMAGE_TAG shippyd --version
+    - docker run $IMAGE_TAG shippy --version
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker push $IMAGE_TAG
   only:
