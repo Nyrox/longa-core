@@ -1,4 +1,6 @@
 from docker:stable
+# Docker Host for the Docker in Docker Image
+ENV DOCKER_HOST=tcp://docker:2375/
 
 RUN apk add --update nodejs nodejs-npm yarn
 
