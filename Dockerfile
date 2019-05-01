@@ -2,6 +2,8 @@ from docker:stable
 
 RUN apk add --update nodejs nodejs-npm yarn
 
+RUN npm config set unsafe-perm true
+
 # Clone the codebase
 COPY ./ /shippy-source
 WORKDIR /shippy-source
@@ -18,3 +20,4 @@ RUN yarn
 RUN yarn build
 RUN npm install -g
 
+RUN npm config set unsafe-perm false
