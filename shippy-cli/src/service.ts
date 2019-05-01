@@ -41,7 +41,7 @@ function login({ host, user, pass }: Registry) {
 	const matches = re.exec (host)
 	
 	const protocol = matches[1]
-	const hostname = matches[3]
+	let hostname = matches[3]
 	const port = matches[5]
 
     if (process.env.CI_REGISTRY) {
