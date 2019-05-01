@@ -8,6 +8,7 @@
     "commander": "^2.19.0",
     "dotenv": "^7.0.0",
     "nodemon": "^1.18.10",
+    "sequest": "^0.10.0",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.4000"
   },
@@ -15,5 +16,8 @@
     "build": "tsc -p .",
     "shippy": "ts-node src/main.ts",
     "watch": "nodemon -e ts --watch src/ --exec yarn build"
+  },
+  "bin": {
+    "shippy": "dist/main.js"
   }
 }
