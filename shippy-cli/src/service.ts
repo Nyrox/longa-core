@@ -44,6 +44,10 @@ function login({ host, user, pass }: Registry) {
 	const hostname = matches[3]
 	const port = matches[5]
 
+    if (process.env.CI_REGISTRY) {
+        hostname = process.env.CI_REGISTRY
+    }
+
     let login_command = `docker login -u ${user} -p ${pass} ${hostname}`
 
     console.info(login_command);
