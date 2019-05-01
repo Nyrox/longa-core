@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as Program from "commander"
 import * as child_process from "child_process"
 
