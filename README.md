@@ -1,7 +1,7 @@
 
 
 
-## Shippy helps you build docker containers, run test and deploy them to a server running shippy-d
+## longa helps you build docker containers, run test and deploy them to a server running longa-d
 
 
 
@@ -10,12 +10,12 @@
 Must be easily understood and used on a basic level by people with little to not devops experience.  
 Simple cases should be simple to manage, create a template once use it for any future projects.  
 
-Complex cases need to be allowed complexity. The user should be able to opt-out of any shippy features that keep them from doing complex things.  
+Complex cases need to be allowed complexity. The user should be able to opt-out of any longa features that keep them from doing complex things.  
 Convention is good, but when conventions fail they need to be configureable.  
 
-Shippy needs to be reliable. Once you spent your time making the templates you need, they should keep working no matter what you do.  
+longa needs to be reliable. Once you spent your time making the templates you need, they should keep working no matter what you do.  
 
-Shippy needs to have exceptional logging and error handling.  
+longa needs to have exceptional logging and error handling.  
 
 
 ## Architecture
@@ -25,10 +25,10 @@ Shippy needs to have exceptional logging and error handling.
 
 ## Brainstorm
 
-shippy new/init --template blabla
+longa new/init --template blabla
 
 
-shippy deploy  
+longa deploy  
 	--host=staging.ministry.de  
 	--user=gitlab-cd
 	--key=$OSCAR_SSH_PRIV_KEY
@@ -40,7 +40,7 @@ shippy deploy
 
 
 
-# Shippy-D
+# longa-D
 
 
 ## Functionality

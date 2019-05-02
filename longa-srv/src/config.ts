@@ -4,8 +4,8 @@ import * as path from "path";
 
 import * as filesystem from "./util/filesystem"
 
-export const CONFIG_DIR = "/etc/shippyd/";
-export const DEFAULT_PATH = CONFIG_DIR + "shippyd.json";
+export const CONFIG_DIR = "/etc/longa-srv/";
+export const DEFAULT_PATH = CONFIG_DIR + "longa-srv.json";
 
 export interface Config {
 	applicationDir: string
@@ -19,7 +19,7 @@ export async function load () : Promise<Config> {
 	const read = util.promisify(fs.readFile);
 
 	let configFile = await read(DEFAULT_PATH, "utf-8").catch(_ => {
-		console.warn("No config file for shippy found. Aborting...")
+		console.warn("No config file for longa found. Aborting...")
 		return process.exit(-1)
 	})
 

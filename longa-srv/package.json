@@ -1,5 +1,5 @@
 {
-  "name": "shippyd",
+  "name": "longa-srv",
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
@@ -18,6 +18,6 @@
     "watch": "nodemon -L -e ts --watch src/ --exec yarn build"
   },
   "bin": {
-    "shippyd": "dist/main.js"
+    "longa-srv": "dist/main.js"
   }
 }

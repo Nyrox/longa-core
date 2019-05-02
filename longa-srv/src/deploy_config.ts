@@ -15,7 +15,7 @@ interface Config {
 }
 
 export function load (): Result<Config> {
-    const path = process.cwd() + "/shippy.config.json"
+    const path = process.cwd() + "/longa.config.json"
 
     try {
         const configFile = fs.readFileSync(path, "utf-8")
@@ -29,7 +29,7 @@ export function load (): Result<Config> {
 export async function store (config: Config): Promise<void> {
     const write = util.promisify(fs.writeFile)
 
-    const path = "./shippy.config.json";
+    const path = "./longa.config.json";
 
     write (path, JSON.stringify(config, null, 4))
 }

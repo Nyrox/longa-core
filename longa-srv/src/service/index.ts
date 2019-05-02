@@ -16,17 +16,17 @@ import { workdir } from "../util/index";
 
 export async function install() {
 	if (Config.exists()) {
-		console.error("A config file for shippyd already exists. Exiting...");
+		console.error("A config file for longa-srv already exists. Exiting...");
 		process.exit(-1);
 	}
 
 	console.info ("Installing...");
 
 	const DEFAULT_CONFIG: Config.Config = {
-		applicationDir: "/var/shippyd/applications/",
-		dataDir: "/var/shippyd/appdata/",
-		authDir: "/etc/shippyd/credentials/",
-		logDir: "/var/log/shippyd/"
+		applicationDir: "/var/longa-srv/applications/",
+		dataDir: "/var/longa-srv/appdata/",
+		authDir: "/etc/longa-srv/credentials/",
+		logDir: "/var/log/longa-srv/"
 	}
 
 	// Create the needed directories
@@ -142,7 +142,7 @@ export async function remove (name) {
 
 	workdir (appdir, () => Docker.compose_down())
 	
-	fs.unlinkSync (appdir + "shippy.config.json")
+	fs.unlinkSync (appdir + "longa.config.json")
 	fs.unlinkSync (appdir + "docker-compose.yml")
 	fs.rmdirSync (appdir)
 	

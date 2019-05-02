@@ -22,7 +22,7 @@ Program.command("build")
     .option("-p, --pass <pass>", "Password used to sign into the registry")
     .option(
         "--context <context>",
-        "Change the working directory context in which to run shippy"
+        "Change the working directory context in which to run longa"
     )
     .action(({ tag, context, publish, user, pass }) => {
         console.log(tag, context)
@@ -32,7 +32,7 @@ Program.command("build")
         let config = Config.load()
 
         if (config === null) {
-            console.error("No shippy config file found in this location.")
+            console.error("No longa config file found in this location.")
             return false
         }
 
@@ -63,7 +63,7 @@ Program.command("publish <tag>")
     .option("-p, --pass <pass>", "Password used to sign into the registry")
     .option(
         "--context <context>",
-        "Change the working directory context in which to run shippy"
+        "Change the working directory context in which to run longa"
     )
     .action((tag, cmd) => {
         if (cmd.context) process.chdir(cmd.context)
@@ -87,7 +87,7 @@ Program.command("deploy")
     .option("--auth-pass <pass>", "SSH Password to deploy with")
     .option(
         "--context <context>",
-        "Change the working directory context in which to run shippy"
+        "Change the working directory context in which to run longa"
     )
     .action((cmd) => {
         if (cmd.context) process.chdir(cmd.context)

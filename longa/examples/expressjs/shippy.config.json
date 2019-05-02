@@ -11,7 +11,7 @@
 		"host": "gitlab.nyrox.tech:5005"
 	},
 	"project": {
-		"name": "shippy-crash-test",
+		"name": "longa-crash-test",
 		"group": "nyrox"
 	}
 }
