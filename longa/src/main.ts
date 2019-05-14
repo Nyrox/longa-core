@@ -17,9 +17,6 @@ require("dotenv").config()
 
 Program.command("build")
     .option("--tag <tag>", "Annotate the image you are building.")
-    .option("--publish", "Publish")
-    .option("-u, --user <user>", "User to login to the docker registry")
-    .option("-p, --pass <pass>", "Password used to sign into the registry")
     .option(
         "--context <context>",
         "Change the working directory context in which to run longa"
@@ -46,16 +43,6 @@ Program.command("build")
 
         console.info(buildCommand)
         child_process.execSync(buildCommand, { stdio: "inherit" });
-
-        if (!publish) return;
-
-        Service.publish(null, "latest", {
-            registry: {
-                user: process.env.REGISTRY_USER || user,
-                pass: process.env.REGISTRY_PASS || pass,
-                host: config.registry.host
-            }
-        })
     })
 
 Program.command("publish <tag>")

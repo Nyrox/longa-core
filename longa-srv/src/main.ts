@@ -27,16 +27,15 @@ Program.command("install")
 		await Service.install()
 	})
 
-Program.command ("deploy <image> <name>")
+Program.command ("deploy <image> <name> -- [env...]")
 	.option("--context <workdir>", "")
 	.description("Deploys the image given by <image> under the name <name>.")
-	.action(async (image, name, cmd) => {
+	.action(async (image, name, env, cmd) => {
 		if (cmd.context) process.chdir (cmd.workdir)
 
+		console.info (env)
 
-		console.info (`Deploying image: ${image} to slot ${name}`)
-
-		await Service.deploy (image, name)
+		await Service.deploy (image, name, env)
 	})
 
 Program.command ("stop <name>")

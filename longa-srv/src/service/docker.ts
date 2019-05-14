@@ -7,38 +7,39 @@ import * as fs from "fs"
 
 
 
-function execute (command: string): Result<any> {
-    let config = Config.loadSync ()
+function execute (command: string, allowLogging: true): Result<any> {
+    let config = Config.loadSync().unwrap()
 
-    let command_log = config.logDir + "command.log"
-    let handle = fs.createWriteStream (command_log, {
-        flags: "a"
-    });
+    if (allowLogging) {
+        let command_log = config.logDir + "command.log"
+        let handle = fs.createWriteStream (command_log, {
+            flags: "a"
+        });
 
-    handle.write (`${process.cwd()}:\n${command}\n\n`)
+        handle.write (`${process.cwd()}:\n${command}\n\n`)
+    }
 
     return catchErrors (_ => child_process.execSync (command, { stdio: "inherit" }))
 }
 
-
-export function login(user, pass, host): Result<any> {
+export function login(user: string, pass: string, host: string): Result<any> {
     let login_cmd = `docker login -u ${user} -p ${pass} ${host}`
 
-    return execute (login_cmd)
-}
-
-export function compose_ps () {
-
+    return execute (login_cmd, false)
 }
 
 export function compose_up(): Result<any> {
     return execute ("docker-compose up -d")
 }
 
-export function compose_stop() {
+export function compose_stop(): Result<any> {
     return execute ("docker-compose stop")
 }
 
-export function compose_down() {
+export function compose_down(): Result<any> {
     return execute ("docker-compose down")
+}
+
+export function compose_ps () {
+
 }

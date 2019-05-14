@@ -1,8 +1,11 @@
 import * as fs from "fs";
 import * as util from "util";
 import * as path from "path";
+import { Result } from "./util/result"
 
 import * as filesystem from "./util/filesystem"
+
+
 
 export const CONFIG_DIR = "/etc/longa-srv/";
 export const DEFAULT_PATH = CONFIG_DIR + "longa-srv.json";
@@ -26,10 +29,9 @@ export async function load () : Promise<Config> {
 	return JSON.parse(configFile);
 }
 
-export function loadSync (): Config {
-	return JSON.parse(
-		filesystem.readFileSync (DEFAULT_PATH, "utf-8").unwrap()
-	)
+export function loadSync(): Result<Config> {
+	return filesystem.readFileSync (DEFAULT_PATH, "utf-8")
+		.map_ok(JSON.parse)
 }
 
 export function exists () : boolean {

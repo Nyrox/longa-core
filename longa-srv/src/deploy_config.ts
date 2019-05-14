@@ -22,7 +22,7 @@ export function load (): Result<Config> {
         return Result.Ok(JSON.parse(configFile))
     }
     catch {
-        return Result.Err("A config file could not be found.")
+        return Result.Err("A deployment config file could not be found.")
     }
 }
 

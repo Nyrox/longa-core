@@ -80,7 +80,7 @@ async function login (host: string): Promise<Result<any>> {
 	}
 }
 
-export async function deploy (image, name) {
+export async function deploy (image, name, env_params) {
 	let config = await Config.load()
 	let deploy = await DeployConfig.load().unwrap()
 
@@ -89,7 +89,9 @@ export async function deploy (image, name) {
 	console.info (`Deploying to config dir: ${appdir}`);
 	
 	// Check if we can login to the registry
-	(await login (deploy.registry.host)).unwrap()
+	(await login (deploy.registry.host))
+		.map_err (e => `Login failed with error: ${e}`)	
+		.unwrap()
 	
 	// Check if the deployment already exists
 	if (fs.existsSync (appdir)) {
@@ -113,8 +115,9 @@ export async function deploy (image, name) {
 			"latest"
 		)
 
-		deployment.generate()
-		
+		deployment.env_params = env_params
+
+		deployment.generate()	
 
 		Docker.compose_up ()
 	}
@@ -130,7 +133,7 @@ export async function stop (name) {
 	}
 
 	process.chdir (appdir)
-	Docker.compose_stop()
+	return Docker.compose_stop()
 }
 
 export async function remove (name) {
