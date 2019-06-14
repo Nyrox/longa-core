@@ -76,7 +76,7 @@ Program.command("deploy")
         "--context <context>",
         "Change the working directory context in which to run longa"
     )
-    .action((cmd) => {
+    .action(async (cmd) => {
         if (cmd.context) process.chdir(cmd.context)
 
         let config = Config.load()
@@ -94,7 +94,7 @@ Program.command("deploy")
         let authMethod = key ? Service.AuthMethod.PrivKey : Service.AuthMethod.Pass
         let authKey = key ? key : pass
 
-        return Service.deploy({
+        return await Service.deploy({
             host: process.env.DEPLOY_HOST || cmd.host,
             user: process.env.DEPLOY_USER || cmd.user,
             authMethod,

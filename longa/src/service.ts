@@ -86,7 +86,10 @@ interface ConnectionSettings {
     authKey: string
 }
 
-export function deploy (conn: ConnectionSettings, image) {
+const util = require ("util");
+const fs = require ("fs")
+
+export async function deploy (conn: ConnectionSettings, image) {
     const config = Config.load()
 
     let client = sequest.connect(`${conn.user}@${conn.host}`, {
@@ -94,8 +97,10 @@ export function deploy (conn: ConnectionSettings, image) {
         privateKey: conn.authMethod == AuthMethod.PrivKey ? conn.authKey : null
     });
 
-    client("ls -al", function (e, stdout) {
-        console.log(stdout.split('\n'));
-        client.end();
-    })
+	const command = util.promisify (client);
+
+	const writer = client.put ("/home/mark/longa.config.json")
+	writer.write (JSON.stringify(config))
+	writer.end()
+	writer.on ("close", () => client.end());
 }
