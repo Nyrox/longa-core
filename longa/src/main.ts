@@ -99,7 +99,7 @@ Program.command("deploy")
             user: process.env.DEPLOY_USER || cmd.user,
             authMethod,
             authKey
-        }, ":latest")
+        }, "latest")
     })
 
 Program.version("1.0.0").parse(process.argv)

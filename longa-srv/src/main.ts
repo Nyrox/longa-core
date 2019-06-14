@@ -31,7 +31,7 @@ Program.command ("deploy <image> <name> -- [env...]")
 	.option("--context <workdir>", "")
 	.description("Deploys the image given by <image> under the name <name>.")
 	.action(async (image, name, env, cmd) => {
-		if (cmd.context) process.chdir (cmd.workdir)
+		if (cmd.context) process.chdir (cmd.context)
 
 		console.info (env)
 

@@ -7,7 +7,7 @@ import * as fs from "fs"
 
 
 
-function execute (command: string, allowLogging: true): Result<any> {
+function execute (command: string, allowLogging: Boolean = true): Result<any> {
     let config = Config.loadSync().unwrap()
 
     if (allowLogging) {

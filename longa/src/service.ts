@@ -92,15 +92,27 @@ const fs = require ("fs")
 export async function deploy (conn: ConnectionSettings, image) {
     const config = Config.load()
 
-    let client = sequest.connect(`${conn.user}@${conn.host}`, {
-        password: conn.authMethod == AuthMethod.Pass ? conn.authKey : null,
+	let fileClient = sequest.connect (`${conn.user}@${conn.host}`, {
+		password: conn.authMethod == AuthMethod.Pass ? conn.authKey : null,
         privateKey: conn.authMethod == AuthMethod.PrivKey ? conn.authKey : null
-    });
-
-	const command = util.promisify (client);
-
-	const writer = client.put ("/home/mark/longa.config.json")
+	});;
+	
+	const writer = fileClient.put ("/home/mark/longa.config.json")
 	writer.write (JSON.stringify(config))
 	writer.end()
-	writer.on ("close", () => client.end());
+	writer.on ("close", async () => {
+		fileClient.end()
+						let client = sequest.connect (`${conn.user}@${conn.host}`, {
+							password: conn.authMethod == AuthMethod.Pass ? conn.authKey : null,
+							privateKey: conn.authMethod == AuthMethod.PrivKey ? conn.authKey : null
+						});
+						
+		client (`longa-srv deploy --context=/home/mark/ ${image} ${config.project.name}`, (err, stdout) => {
+			// console.error (err)
+			console.info(stdout)
+
+			client.end()
+		});
+
+	})
 }
