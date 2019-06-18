@@ -73,8 +73,8 @@ Program.command("publish")
 Program.command("deploy")
     .option("-h, --host <host>", "Host to deploy to")
     .option("-u, --user <user>", "SSH User to deploy with")
-    .option("--auth-key <key>", "SSH Private Key to deploy with")
-    .option("--auth-pass <pass>", "SSH Password to deploy with")
+    .option("-ak, --auth-key <key>", "SSH Private Key to deploy with")
+    .option("-ap, --auth-pass <pass>", "SSH Password to deploy with")
     .option(
         "--context <context>",
         "Change the working directory context in which to run longa"
