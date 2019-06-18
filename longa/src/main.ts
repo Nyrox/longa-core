@@ -16,12 +16,13 @@ require("dotenv").config()
 
 
 Program.command("build")
-    .option("--tag <tag>", "Annotate the image you are building.")
+	.option("--tag <tag>", "Annotate the image you are building.")
+	.option("--image <image>", "Change the image name. Default is the repository name, when overwritten the image name is appended to the repository path.")
     .option(
         "--context <context>",
         "Change the working directory context in which to run longa"
     )
-    .action(({ tag, context, publish, user, pass }) => {
+    .action(({ tag, image, context, publish, user, pass }) => {
         console.log(tag, context)
 
         if (context) process.chdir(context)
@@ -35,7 +36,7 @@ Program.command("build")
 
         let imageName = `${config.registry.host}/${config.project.group}/${
             config.project.name
-            }`
+            }` + (image ? `/${image}` : "");
 
         let imageTag = tag ? `:${tag}` : "";
 
