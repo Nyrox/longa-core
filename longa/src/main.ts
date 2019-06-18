@@ -46,20 +46,22 @@ Program.command("build")
         child_process.execSync(buildCommand, { stdio: "inherit" });
     })
 
-Program.command("publish <tag>")
+Program.command("publish")
+	.option("--tag <tag>", "")
+	.option("--image <image>", "Change the image name. Default is the repository name, when overwritten the image name is appended to the repository path.")
     .option("-u, --user <user>", "User to login to the docker registry")
     .option("-p, --pass <pass>", "Password used to sign into the registry")
     .option(
         "--context <context>",
         "Change the working directory context in which to run longa"
     )
-    .action((tag, cmd) => {
+    .action((cmd) => {
         if (cmd.context) process.chdir(cmd.context)
 
         let config = Config.load()
         if (!CliTools.insist(config !== null, "No config file found at this location")) { return }
 
-        return Service.publish(null, "latest", {
+        return Service.publish(cmd.image, cmd.tag, {
             registry: {
                 user: process.env.REGISTRY_USER || cmd.user,
                 pass: process.env.REGISTRY_PASS || cmd.pass,
