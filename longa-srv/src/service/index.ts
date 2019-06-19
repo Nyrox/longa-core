@@ -84,6 +84,10 @@ export async function deploy (image="", tag="", name, env_params) {
 	let config = await Config.load()
 	let deploy = await DeployConfig.load().unwrap()
 
+	if (!name) {
+		name = deploy.project.group + "-" + deploy.project.name + (image ? "-" + image : "");
+	}
+
 	let appdir = `${config.applicationDir}${name}/`
 
 	console.info (`Deploying to config dir: ${appdir}`);
