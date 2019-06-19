@@ -28,7 +28,7 @@ Program.command("install")
 	})
 
 Program.command ("deploy -- [env...]")
-	.option("--name <name>", "Change the deployment name. If left empty defaults to image name")
+	.option("--name <deployment_name>", "Change the deployment name. If left empty defaults to image name")
 	.option("-i, --image <image>")
 	.option("-t, --tag <tag>")
 	.option("--context <workdir>", "")
@@ -40,7 +40,7 @@ Program.command ("deploy -- [env...]")
 
 		if (!cmd.tag) cmd.tag = "latest";
 
-		await Service.deploy (cmd.image, cmd.tag, cmd.name, env)
+		await Service.deploy (cmd.image, cmd.tag, cmd.deployment_name, env)
 	})
 
 Program.command ("stop <name>")
