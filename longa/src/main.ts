@@ -73,38 +73,39 @@ Program.command("publish")
 Program.command("deploy")
     .option("-h, --host <host>", "Host to deploy to")
     .option("-u, --user <user>", "SSH User to deploy with")
-    .option("-ak, --auth-key <key>", "SSH Private Key to deploy with")
-    .option("-ap, --auth-pass <pass>", "SSH Password to deploy with")
+    .option("--auth-key <key>", "SSH Private Key to deploy with")
+    .option("--auth-pass <pass>", "SSH Password to deploy with")
     .option(
         "--context <context>",
         "Change the working directory context in which to run longa"
     )
     .action(async (cmd) => {
-        if (cmd.context) process.chdir(cmd.context)
-
+		if (cmd.context) process.chdir(cmd.context)
+		
         let config = Config.load()
-
+		
         let key = process.env.DEPLOY_KEY || cmd.authKey;
         let pass = process.env.DEPLOY_PASS || cmd.authPass;
 		
 		console.log(cmd)
 		console.log(`Deploying to ${cmd.host} using ${cmd.user}`)
-
+		
         CliTools.insistOr (config != null, "No configuration file found at this location", _ => process.exit(-1));
         CliTools.insistOr (cmd.host != null, "Please provide a host to deploy to", _ => process.exit(-1));
         CliTools.insistOr (cmd.user != null, "Please provide a user to deploy with", _ => process.exit(-1));
         CliTools.insistOr (!(key && pass), "You have set a password and a private key to authenticate with. Please make sure to choose one", _ => process.exit(-1));
         CliTools.insistOr (key || pass, "Neither a password nor a private key is set for authentication. Please be sure to set one.", _ => process.exit(-1));
-
+		
         let authMethod = key ? Service.AuthMethod.PrivKey : Service.AuthMethod.Pass
         let authKey = key ? key : pass
-
+		
         return await Service.deploy({
-            host: process.env.DEPLOY_HOST || cmd.host,
+			host: process.env.DEPLOY_HOST || cmd.host,
             user: process.env.DEPLOY_USER || cmd.user,
             authMethod,
             authKey
         }, "latest")
     })
-
+	
+	console.log (process.argv);
 Program.version("1.0.0").parse(process.argv)
