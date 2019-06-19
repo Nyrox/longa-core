@@ -87,9 +87,6 @@ Program.command("deploy")
         let key = process.env.DEPLOY_KEY || cmd.authKey;
         let pass = process.env.DEPLOY_PASS || cmd.authPass;
 		
-		console.log(cmd)
-		console.log(`Deploying to ${cmd.host} using ${cmd.user}`)
-		
         CliTools.insistOr (config != null, "No configuration file found at this location", _ => process.exit(-1));
         CliTools.insistOr (cmd.host != null, "Please provide a host to deploy to", _ => process.exit(-1));
         CliTools.insistOr (cmd.user != null, "Please provide a user to deploy with", _ => process.exit(-1));
@@ -107,5 +104,4 @@ Program.command("deploy")
         }, "latest")
     })
 	
-	console.log (process.argv);
 Program.version("1.0.0").parse(process.argv)

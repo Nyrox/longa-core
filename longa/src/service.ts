@@ -97,7 +97,7 @@ export async function deploy (conn: ConnectionSettings, image) {
         privateKey: conn.authMethod == AuthMethod.PrivKey ? conn.authKey : null
 	});;
 	
-	const writer = fileClient.put ("/home/mark/longa.config.json")
+	const writer = fileClient.put (`/home/${conn.user}/longa.config.json`)
 	writer.write (JSON.stringify(config))
 	writer.end()
 	writer.on ("close", async () => {
@@ -107,7 +107,7 @@ export async function deploy (conn: ConnectionSettings, image) {
 							privateKey: conn.authMethod == AuthMethod.PrivKey ? conn.authKey : null
 						});
 						
-		client (`longa-srv deploy --context=/home/mark/ ${image} ${config.project.name}`, (err, stdout) => {
+		client (`longa-srv deploy --context=/home/${conn.user}/ ${image} ${config.project.name}`, (err, stdout) => {
 			// console.error (err)
 			console.info(stdout)
 
