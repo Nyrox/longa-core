@@ -27,7 +27,9 @@ Program.command("install")
 		await Service.install()
 	})
 
-Program.command ("deploy <image> <name> -- [env...]")
+Program.command ("deploy <name> -- [env...]")
+	.option("-i, --image <image>")
+	.option("-t, --tag <tag>")
 	.option("--context <workdir>", "")
 	.description("Deploys the image given by <image> under the name <name>.")
 	.action(async (image, name, env, cmd) => {
@@ -35,7 +37,9 @@ Program.command ("deploy <image> <name> -- [env...]")
 
 		console.info (env)
 
-		await Service.deploy (image, name, env)
+		if (!cmd.tag) cmd.tag = "latest";
+
+		await Service.deploy (cmd.image, cmd.tag, name, env)
 	})
 
 Program.command ("stop <name>")

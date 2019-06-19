@@ -80,7 +80,7 @@ async function login (host: string): Promise<Result<any>> {
 	}
 }
 
-export async function deploy (image, name, env_params) {
+export async function deploy (image="", tag="", name, env_params) {
 	let config = await Config.load()
 	let deploy = await DeployConfig.load().unwrap()
 
@@ -111,8 +111,8 @@ export async function deploy (image, name, env_params) {
 			deploy.registry.host,
 			deploy.project.group,
 			deploy.project.name,
-			"",
-			"latest"
+			image,
+			tag
 		)
 
 		deployment.env_params = env_params
@@ -157,7 +157,7 @@ function get_qualified_image_name(host, group, project, imageName = null, tag = 
     let base = `${host}/${group}/${project}`;
 
     return imageName ?
-        base + `/${imageName}:${tag}` : base + `:${tag}`
+        base + `/${imageName}:${tag}` : base + `${tag ? ":" + tag : ""}`
 }
 
 export async function list_instances() {

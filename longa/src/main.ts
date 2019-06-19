@@ -72,7 +72,9 @@ Program.command("publish")
 
 Program.command("deploy")
     .option("-h, --host <host>", "Host to deploy to")
-    .option("-u, --user <user>", "SSH User to deploy with")
+	.option("-u, --user <user>", "SSH User to deploy with")
+	.option("-i, --image", "Image")
+	.option("-t, --tag", "tag")
     .option("--auth-key <key>", "SSH Private Key to deploy with")
     .option("--auth-pass <pass>", "SSH Password to deploy with")
     .option(
@@ -101,7 +103,7 @@ Program.command("deploy")
             user: process.env.DEPLOY_USER || cmd.user,
             authMethod,
             authKey
-        }, "latest")
+        }, cmd.image, cmd.tag)
     })
 	
 Program.version("1.0.0").parse(process.argv)

@@ -89,7 +89,7 @@ interface ConnectionSettings {
 const util = require ("util");
 const fs = require ("fs")
 
-export async function deploy (conn: ConnectionSettings, image) {
+export async function deploy (conn: ConnectionSettings, image, tag) {
     const config = Config.load()
 
 	let fileClient = sequest.connect (`${conn.user}@${conn.host}`, {
@@ -106,8 +106,8 @@ export async function deploy (conn: ConnectionSettings, image) {
 							password: conn.authMethod == AuthMethod.Pass ? conn.authKey : null,
 							privateKey: conn.authMethod == AuthMethod.PrivKey ? conn.authKey : null
 						});
-						
-		client (`longa-srv deploy --context=/home/${conn.user}/ ${image} ${config.project.name}`, (err, stdout) => {
+
+		client (`longa-srv deploy --context=/home/${conn.user}/  ${image ? "--image " + image : ""} ${tag ? "--tag " + tag : ""}`, (err, stdout) => {
 			// console.error (err)
 			console.info(stdout)
 
