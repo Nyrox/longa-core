@@ -5,15 +5,19 @@ import * as fs from "fs";
 
 export class Deployment {
     public image: string
-    public env_params: []
+    public env_params: string[]
+    public vhost: string
 
     constructor() {
         this.image = ""
+        this.vhost = ""
     }
 
     generate () {
 
-
+        if (this.vhost) {
+            this.env_params.push (`VIRTUAL_HOST=${this.vhost}`)
+        } 
 
         const compose = {
             version: "3.7",

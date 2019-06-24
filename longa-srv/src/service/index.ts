@@ -85,7 +85,7 @@ export async function deploy (image="", tag="", name, env_params) {
 	let deploy = await DeployConfig.load().unwrap()
 
 	if (!name) {
-		name = deploy.project.group + "-" + deploy.project.name + (image ? "-" + image : "");
+		name = deploy.project.group + "." + deploy.project.name + (image ? "." + image : "");
 	}
 
 	let appdir = `${config.applicationDir}${name}/`
@@ -120,6 +120,7 @@ export async function deploy (image="", tag="", name, env_params) {
 		)
 
 		deployment.env_params = env_params
+        deployment.vhost = name + ".longa.nyrox.tech"
 
 		deployment.generate()	
 
